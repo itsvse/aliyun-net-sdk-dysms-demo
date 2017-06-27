@@ -32,12 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="aliyun-net-sdk-core">
-      <HintPath>..\aliyun-net-sdk-dysms\aliyun-net-sdk-core.dll</HintPath>
+    <Reference Include="aliyun-net-sdk-core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\阿里云短信批量发送\正式版本\aliyun-net-sdk-core.dll</HintPath>
     </Reference>
     <Reference Include="aliyun-net-sdk-dysms, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\project\my\aliyun-openapi-net-sdk\aliyun-net-sdk-dysms\bin\Debug\aliyun-net-sdk-dysms.dll</HintPath>
+      <HintPath>..\..\阿里云短信批量发送\正式版本\aliyun-net-sdk-dysms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

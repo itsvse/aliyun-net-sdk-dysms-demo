@@ -26,18 +26,24 @@ namespace aliyun_net_sdk_dysms_demo
         private const String _domain = "dysmsapi.aliyuncs.com";
         static void Main(string[] args)
         {
-            SendSms();
+            //一定要加!!!
+            DefaultProfile.AddEndpoint("cn-hangzhou", "cn-hangzhou", _product, _domain);
+            //发送短信
+            var SendSmsResponse = SendSms();
+            //查询状态
+            QuerySendDetails("<your phoneNumbers>", "<your bizid>");
+            //example
+            QuerySendDetails("<your phoneNumbers>", SendSmsResponse.BizId);
             Console.ReadKey();    
         }
 
         /// <summary>
         /// 发送短信
         /// </summary>
-        static void SendSms()
+        /// <returns></returns>
+        static SendSmsResponse SendSms()
         {
-            IClientProfile profile = DefaultProfile.GetProfile("cn-shanghai", _accessKey, _accessSecret);
-            //一定要加!!!
-            DefaultProfile.AddEndpoint("cn-hangzhou", "cn-hangzhou", _product, _domain);
+            IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", _accessKey, _accessSecret);
             IAcsClient client = new DefaultAcsClient(profile);
             SendSmsRequest request = new SendSmsRequest();
             try
@@ -51,6 +57,41 @@ namespace aliyun_net_sdk_dysms_demo
                 Console.WriteLine(httpResponse.BizId);
                 Console.WriteLine(httpResponse.Message);
                 Console.WriteLine(httpResponse.RequestId);
+                return httpResponse;
+            }
+            catch (ServerException e)
+            {
+                Console.WriteLine(e.ErrorCode);
+                Console.WriteLine(e.ErrorMessage);
+                throw e;
+            }
+            catch (ClientException e)
+            {
+                Console.WriteLine(e.ErrorCode);
+                Console.WriteLine(e.ErrorMessage);
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// 短信发送查询
+        /// </summary>
+        /// <param name="phone">发送手机号</param>
+        /// <param name="bizid">业务编号</param>
+        static void QuerySendDetails(string phone, string bizid)
+        {
+            IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", _accessKey, _accessSecret);
+            IAcsClient client = new DefaultAcsClient(profile);
+            QuerySendDetailsRequest request = new QuerySendDetailsRequest();
+            try
+            {
+                request.PhoneNumber = phone;
+                request.BizId = bizid;
+                request.SendDate = DateTime.Now.ToString("yyyyMMdd");
+                request.PageSize = 10L;
+                request.CurrentPage = 1L;
+                QuerySendDetailsResponse httpResponse = client.GetAcsResponse(request);
+                Console.WriteLine(httpResponse.Code);
             }
             catch (ServerException e)
             {
@@ -62,6 +103,7 @@ namespace aliyun_net_sdk_dysms_demo
                 Console.WriteLine(e.ErrorCode);
                 Console.WriteLine(e.ErrorMessage);
             }
+
         }
     }
 }
